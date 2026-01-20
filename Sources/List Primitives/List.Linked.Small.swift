@@ -213,13 +213,15 @@ extension List.Linked.Small where Element: Copyable {
     }
 
     /// Allocates a node slot (heap mode), returning its index.
+    ///
+    /// Uses Model B allocation: freed slots from free-list first, then
+    /// "virgin" slots via count (implicit nextUnused = count).
     @usableFromInline
     mutating func _allocateHeapSlot() -> Int {
         if _heap!.header.freeHead >= 0 {
             let index = _heap!.header.freeHead
-            _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
-                _heap!.header.freeHead = unsafe nodes[index].nextIndex
-            }
+            // Load free-next from raw bytes (slot is deinitialized)
+            _heap!.header.freeHead = _heap!._loadFreeNext(at: index)
             return index
         }
         return _heap!.header.count
@@ -431,28 +433,36 @@ extension List.Linked.Small where Element: Copyable {
     @usableFromInline
     mutating func _popFirstFromHeap() -> Element? {
         let headIndex = _head
+
+        // Step 1: Capture element and indices BEFORE deinitialize
         var element: Element?
         var nextIndex: Int = -1
-
         _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
             element = unsafe nodes[headIndex].element
             nextIndex = unsafe nodes[headIndex].nextIndex
-            unsafe (nodes + headIndex).deinitialize(count: 1)
-            unsafe (nodes[headIndex].links[0] = _heap!.header.freeHead)
         }
 
-        _heap!.header.freeHead = headIndex
+        // Step 2: Update header using captured values
         _head = nextIndex
+        if nextIndex < 0 {
+            _tail = -1
+        }
 
+        // Step 3: Patch neighbor (new head has no prev)
         if nextIndex >= 0 && N >= 2 {
             _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
                 unsafe (nodes[nextIndex].links[1] = -1)
             }
         }
 
-        if nextIndex < 0 {
-            _tail = -1
+        // Step 4: Deinitialize the node
+        _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
+            unsafe (nodes + headIndex).deinitialize(count: 1)
         }
+
+        // Step 5: Store free-next as raw bytes and update freeHead
+        _heap!._storeFreeNext(at: headIndex, next: _heap!.header.freeHead)
+        _heap!.header.freeHead = headIndex
 
         _count -= 1
         _heap!.header.head = _head
@@ -547,26 +557,36 @@ extension List.Linked.Small where Element: Copyable {
     @usableFromInline
     mutating func _popLastDoublyFromHeap() -> Element? {
         let tailIndex = _tail
+
+        // Step 1: Capture element and indices BEFORE deinitialize
         var element: Element?
         var prevIndex: Int = -1
-
         _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
             prevIndex = unsafe nodes[tailIndex].links[1]
             element = unsafe nodes[tailIndex].element
-            unsafe (nodes + tailIndex).deinitialize(count: 1)
-            unsafe (nodes[tailIndex].links[0] = _heap!.header.freeHead)
         }
 
-        _heap!.header.freeHead = tailIndex
+        // Step 2: Update header using captured values
         _tail = prevIndex
+        if prevIndex < 0 {
+            _head = -1
+        }
 
+        // Step 3: Patch neighbor (new tail has no next)
         if prevIndex >= 0 {
             _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
                 unsafe (nodes[prevIndex].links[0] = -1)
             }
-        } else {
-            _head = -1
         }
+
+        // Step 4: Deinitialize the node
+        _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
+            unsafe (nodes + tailIndex).deinitialize(count: 1)
+        }
+
+        // Step 5: Store free-next as raw bytes and update freeHead
+        _heap!._storeFreeNext(at: tailIndex, next: _heap!.header.freeHead)
+        _heap!.header.freeHead = tailIndex
 
         _count -= 1
         _heap!.header.head = _head
@@ -579,6 +599,7 @@ extension List.Linked.Small where Element: Copyable {
     mutating func _popLastSinglyFromHeap() -> Element? {
         let tailIndex = _tail
 
+        // Step 1: Find prev node (O(n) traversal) - BEFORE any deinitialize
         var prevIndex: Int = -1
         if _count > 1 {
             var current = _head
@@ -594,24 +615,33 @@ extension List.Linked.Small where Element: Copyable {
             }
         }
 
+        // Capture element BEFORE deinitialize
         var element: Element?
-
         _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
             element = unsafe nodes[tailIndex].element
-            unsafe (nodes + tailIndex).deinitialize(count: 1)
-            unsafe (nodes[tailIndex].links[0] = _heap!.header.freeHead)
+        }
 
-            if prevIndex >= 0 {
+        // Step 2: Update header using captured values
+        _tail = prevIndex
+        if prevIndex < 0 {
+            _head = -1
+        }
+
+        // Step 3: Patch neighbor (new tail has no next)
+        if prevIndex >= 0 {
+            _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
                 unsafe (nodes[prevIndex].links[0] = -1)
             }
         }
 
-        _heap!.header.freeHead = tailIndex
-        _tail = prevIndex
-
-        if prevIndex < 0 {
-            _head = -1
+        // Step 4: Deinitialize the node
+        _ = unsafe _heap!.withUnsafeMutablePointerToElements { nodes in
+            unsafe (nodes + tailIndex).deinitialize(count: 1)
         }
+
+        // Step 5: Store free-next as raw bytes and update freeHead
+        _heap!._storeFreeNext(at: tailIndex, next: _heap!.header.freeHead)
+        _heap!.header.freeHead = tailIndex
 
         _count -= 1
         _heap!.header.head = _head
