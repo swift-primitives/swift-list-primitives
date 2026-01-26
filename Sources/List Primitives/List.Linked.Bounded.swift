@@ -712,7 +712,7 @@ extension List.Linked.Bounded where Element: ~Copyable {
 
 // MARK: - Sequence (Copyable elements only)
 
-extension List.Linked.Bounded: Sequence where Element: Copyable {
+extension List.Linked.Bounded: Swift.Sequence where Element: Copyable {
     /// An iterator over the elements of a bounded linked list.
     public struct Iterator: IteratorProtocol {
         @usableFromInline

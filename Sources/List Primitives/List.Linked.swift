@@ -1430,7 +1430,7 @@ extension List.Linked where Element: ~Copyable {
 
 // MARK: - Sequence (Copyable elements only)
 
-extension List.Linked: Sequence where Element: Copyable {
+extension List.Linked: Swift.Sequence where Element: Copyable {
     /// An iterator over the elements of a linked list.
     public struct Iterator: IteratorProtocol {
         @usableFromInline
