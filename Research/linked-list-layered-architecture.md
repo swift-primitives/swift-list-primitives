@@ -503,13 +503,19 @@ No new types needed in swift-storage-primitives or swift-memory-primitives.
 
 ## Part V: Outcome
 
-**Status**: IN_PROGRESS
+**Status**: DECISION
 
-### Recommendation
+### Decision
 
-Build `Buffer<Element>.Linked<N>` in swift-buffer-primitives using `Storage<Node>.Heap` for element lifecycle and buffer-level free-list management. Rewrite `List<Element>.Linked<N>` as a thin wrapper.
+Built `Buffer<Element>.Linked<N>` in swift-buffer-primitives using `Storage<Node>.Pool` for element lifecycle and buffer-level free-list management. Rewrote both `List<Element>.Linked<N>` and `Queue<Element>.Linked` as thin wrappers delegating to `Buffer.Linked<N>`.
 
-This follows established patterns (Buffer.Slab over Storage.Heap), requires no new types in lower-tier packages, solves the cross-module partial consumption error via `storage.pointer(at:)`, and maintains optimal cache locality by co-locating element and link data in compound Node structs.
+Implementation details:
+- `Buffer<Element>.Linked<1>` (singly-linked) used by `Queue.Linked` and `List.Linked<1>`
+- `Buffer<Element>.Linked<2>` (doubly-linked) used by `List.Linked<2>`
+- Node uses `InlineArray<N, Index<Node>>` for links — no memory waste for N=1
+- Peek/Reversed view types use `Property.View.Read.Typed<Element>.Valued<N>` to avoid ~Copyable constraint poisoning
+- `Int` boundary overloads on `create(capacity:)` and `ensureCapacity(_:)` per [IMPL-010]
+- All existing tests pass (70 queue tests, list builds clean)
 
 ---
 
