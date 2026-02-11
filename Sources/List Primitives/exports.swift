@@ -1,6 +1,5 @@
 // exports.swift
-// Re-export dependencies for consumers.
+// Umbrella module: Re-exports Core + Linked for consumers.
 
-@_exported import Index_Primitives
-@_exported import Input_Primitives
-@_exported import Collection_Primitives
+@_exported public import List_Primitives_Core
+@_exported public import List_Linked_Primitives

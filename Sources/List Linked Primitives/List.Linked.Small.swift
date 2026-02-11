@@ -837,6 +837,4 @@ extension List.Linked.Small where Element: Copyable {
 // so it cannot conform to Sequence, Equatable, or Hashable.
 // Use forEach(_:) for iteration and manual comparison if needed.
 
-// MARK: - Sendable
-
-extension List.Linked.Small: @unchecked Sendable where Element: Sendable {}
+// Note: Sendable conformance is declared in List Primitives Core.
