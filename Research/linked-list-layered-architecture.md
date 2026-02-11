@@ -417,8 +417,8 @@ When Storage.Pool is eventually built (for hash tables and other consumers), Buf
 |----------------|--------------------|---------|-------|
 | `List.Linked<N>` | `Buffer.Linked<N>` over `Storage<Node>.Heap` | Growable, ARC, CoW | Dynamic capacity |
 | `List.Linked<N>.Bounded` | `Buffer.Linked<N>.Bounded` over `Storage<Node>.Heap` | Fixed capacity | Throws on overflow |
-| `List.Linked<N>.Inline` | `Buffer.Linked<N>.Inline` over `Storage<Node>.Inline` | Stack-allocated | Copyable elements only |
-| `List.Linked<N>.Small` | `Buffer.Linked<N>.Small` | Inline + heap hybrid | Copyable elements only |
+| `List.Linked<N>.Inline` | `Buffer.Linked<N>.Inline` over `Storage<Node>.Inline` | Stack-allocated | ~Copyable supported |
+| `List.Linked<N>.Small` | `Buffer.Linked<N>.Small` | Inline + heap hybrid | ~Copyable supported |
 
 ---
 

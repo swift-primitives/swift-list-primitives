@@ -95,7 +95,7 @@ extension List.Linked.Bounded where Element: ~Copyable {
     public typealias Error = __ListLinkedBoundedError
 }
 
-extension List.Linked.Inline where Element: Copyable {
+extension List.Linked.Inline where Element: ~Copyable {
     /// Errors that can occur during inline linked list operations.
     ///
     /// ## Cases
@@ -105,7 +105,7 @@ extension List.Linked.Inline where Element: Copyable {
     public typealias Error = __ListLinkedInlineError
 }
 
-extension List.Linked.Small where Element: Copyable {
+extension List.Linked.Small where Element: ~Copyable {
     /// Errors that can occur during small linked list operations.
     ///
     /// ## Cases
