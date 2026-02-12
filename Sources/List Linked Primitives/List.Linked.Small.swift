@@ -26,7 +26,7 @@ extension List.Linked.Small where Element: ~Copyable {
 extension List.Linked.Small where Element: ~Copyable {
     /// The current number of elements in the list.
     @inlinable
-    public var count: Int { Int(bitPattern: _buffer.count) }
+    public var count: Index<Element>.Count { _buffer.count }
 
     /// Whether the list is empty.
     @inlinable
@@ -49,7 +49,7 @@ extension List.Linked.Small where Element: ~Copyable {
     /// - Complexity: O(1) amortized
     @inlinable
     public mutating func prepend(_ element: consuming Element) {
-        _buffer.insertFront(element)
+        _buffer.insert.front(element)
     }
 
     /// Adds an element to the back of the list.
@@ -60,7 +60,7 @@ extension List.Linked.Small where Element: ~Copyable {
     /// - Complexity: O(1) amortized
     @inlinable
     public mutating func append(_ element: consuming Element) {
-        _buffer.insertBack(element)
+        _buffer.insert.back(element)
     }
 
     /// Removes and returns the first element, or `nil` if empty.
@@ -70,7 +70,7 @@ extension List.Linked.Small where Element: ~Copyable {
     @inlinable
     @discardableResult
     public mutating func popFirst() -> Element? {
-        _buffer.removeFront()
+        _buffer.remove.front()
     }
 
     /// Removes and returns the last element, or `nil` if empty.
@@ -80,7 +80,7 @@ extension List.Linked.Small where Element: ~Copyable {
     @inlinable
     @discardableResult
     public mutating func popLast() -> Element? {
-        _buffer.removeBack()
+        _buffer.remove.back()
     }
 
     /// Removes the first element and returns it.

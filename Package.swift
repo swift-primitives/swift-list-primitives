@@ -24,6 +24,10 @@ let package = Package(
             name: "List Linked Primitives",
             targets: ["List Linked Primitives"]
         ),
+        .library(
+            name: "List Primitives Test Support",
+            targets: ["List Primitives Test Support"]
+        ),
     ],
     dependencies: [
         .package(path: "../swift-buffer-primitives"),
@@ -59,9 +63,21 @@ let package = Package(
                 "List Linked Primitives",
             ]
         ),
+        .target(
+            name: "List Primitives Test Support",
+            dependencies: [
+                "List Primitives",
+                .product(name: "Buffer Primitives Test Support", package: "swift-buffer-primitives"),
+                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+            ],
+            path: "Tests/Support"
+        ),
         .testTarget(
             name: "List Primitives Tests",
-            dependencies: ["List Primitives"]
+            dependencies: [
+                "List Primitives",
+                "List Primitives Test Support",
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

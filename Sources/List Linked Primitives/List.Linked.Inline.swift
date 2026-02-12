@@ -26,7 +26,7 @@ extension List.Linked.Inline where Element: ~Copyable {
 extension List.Linked.Inline where Element: ~Copyable {
     /// The current number of elements in the list.
     @inlinable
-    public var count: Int { Int(bitPattern: _buffer.count) }
+    public var count: Index<Element>.Count { _buffer.count }
 
     /// Whether the list is empty.
     @inlinable
@@ -49,7 +49,7 @@ extension List.Linked.Inline where Element: ~Copyable {
     @inlinable
     public mutating func prepend(_ element: consuming Element) throws(__ListLinkedInlineError) {
         do {
-            try _buffer.insertFront(element)
+            try _buffer.insert.front(element)
         } catch {
             throw .overflow
         }
@@ -63,7 +63,7 @@ extension List.Linked.Inline where Element: ~Copyable {
     @inlinable
     public mutating func append(_ element: consuming Element) throws(__ListLinkedInlineError) {
         do {
-            try _buffer.insertBack(element)
+            try _buffer.insert.back(element)
         } catch {
             throw .overflow
         }
@@ -76,7 +76,7 @@ extension List.Linked.Inline where Element: ~Copyable {
     @inlinable
     @discardableResult
     public mutating func popFirst() -> Element? {
-        _buffer.removeFront()
+        _buffer.remove.front()
     }
 
     /// Removes and returns the last element, or `nil` if empty.
@@ -86,7 +86,7 @@ extension List.Linked.Inline where Element: ~Copyable {
     @inlinable
     @discardableResult
     public mutating func popLast() -> Element? {
-        _buffer.removeBack()
+        _buffer.remove.back()
     }
 
     /// Removes the first element and returns it.

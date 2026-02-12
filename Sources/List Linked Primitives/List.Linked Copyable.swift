@@ -11,61 +11,47 @@
 
 public import Buffer_Linked_Primitives
 
-// MARK: - Copy-on-Write (Copyable elements only)
+// MARK: - CoW-Safe Mutations (Copyable elements only)
 
 extension List.Linked where Element: Copyable {
-    /// Ensures the storage is uniquely referenced before mutation.
-    @usableFromInline
-    package mutating func makeUnique() {
-        _buffer.makeUnique()
-    }
-
-    /// Adds an element to the front of the list (CoW-aware).
+    /// Adds an element to the front of the list (CoW-safe).
     ///
     /// - Parameter element: The element to prepend.
-    /// - Complexity: O(1) amortized, O(n) if copy triggered
+    /// - Complexity: O(1) amortized
     @inlinable
     public mutating func prepend(_ element: Element) {
-        makeUnique()
-        ensureCapacity(count + 1)
-        try! _buffer.insertFront(element)
+        _buffer.insert.front(element)
     }
 
-    /// Adds an element to the back of the list (CoW-aware).
+    /// Adds an element to the back of the list (CoW-safe).
     ///
     /// - Parameter element: The element to append.
-    /// - Complexity: O(1) amortized; +O(n) if copy triggered
+    /// - Complexity: O(1) amortized
     @inlinable
     public mutating func append(_ element: Element) {
-        makeUnique()
-        ensureCapacity(count + 1)
-        try! _buffer.insertBack(element)
+        _buffer.insert.back(element)
     }
 
-    /// Removes and returns the first element (CoW-aware).
+    /// Removes and returns the first element (CoW-safe).
     @inlinable
     @discardableResult
     public mutating func popFirst() -> Element? {
-        makeUnique()
-        return _buffer.removeFront()
+        _buffer.remove.front()
     }
 
-    /// Removes and returns the last element (CoW-aware).
+    /// Removes and returns the last element (CoW-safe).
     @inlinable
     @discardableResult
     public mutating func popLast() -> Element? {
-        makeUnique()
-        return _buffer.removeBack()
+        _buffer.remove.back()
     }
 
-    /// Removes all elements (CoW-aware).
+    /// Removes all elements (CoW-safe).
     @inlinable
     public mutating func clear(keepingCapacity: Bool = true) {
-        makeUnique()
         _buffer.removeAll()
         if !keepingCapacity {
-            let initialCapacity = Index_Primitives.Index<Buffer<Element>.Linked<N>.Node>.Count(Cardinal(4 as UInt))
-            self._buffer = try! Buffer<Element>.Linked<N>.create(capacity: initialCapacity)
+            self._buffer = try! .create(capacity: 4)
         }
     }
 }

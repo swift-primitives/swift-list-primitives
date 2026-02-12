@@ -17,7 +17,7 @@ public import Property_Primitives
 extension List.Linked.Bounded where Element: ~Copyable {
     /// The current number of elements in the list.
     @inlinable
-    public var count: Int { Int(bitPattern: _buffer.count) }
+    public var count: Index<Element>.Count { _buffer.count }
 
     /// Whether the list is empty.
     @inlinable
@@ -40,7 +40,7 @@ extension List.Linked.Bounded where Element: ~Copyable {
     @inlinable
     public mutating func prepend(_ element: consuming Element) throws(__ListLinkedBoundedError) {
         guard !isFull else { throw .overflow }
-        try! _buffer.insertFront(element)
+        try! _buffer.insert.front(element)
     }
 
     /// Adds an element to the back of the list.
@@ -51,7 +51,7 @@ extension List.Linked.Bounded where Element: ~Copyable {
     @inlinable
     public mutating func append(_ element: consuming Element) throws(__ListLinkedBoundedError) {
         guard !isFull else { throw .overflow }
-        try! _buffer.insertBack(element)
+        try! _buffer.insert.back(element)
     }
 
     /// Removes and returns the first element, or `nil` if empty.
@@ -61,7 +61,7 @@ extension List.Linked.Bounded where Element: ~Copyable {
     @inlinable
     @discardableResult
     public mutating func popFirst() -> Element? {
-        _buffer.removeFront()
+        _buffer.remove.front()
     }
 
     /// Removes and returns the last element, or `nil` if empty.
@@ -71,7 +71,7 @@ extension List.Linked.Bounded where Element: ~Copyable {
     @inlinable
     @discardableResult
     public mutating func popLast() -> Element? {
-        _buffer.removeBack()
+        _buffer.remove.back()
     }
 
     /// Removes the first element and returns it.
@@ -114,46 +114,46 @@ extension List.Linked.Bounded where Element: ~Copyable {
 extension List.Linked.Bounded where Element: Copyable {
     /// Ensures the storage is uniquely referenced before mutation.
     @usableFromInline
-    mutating func makeUnique() {
-        _buffer.makeUnique()
+    mutating func ensureUnique() {
+        _buffer.ensureUnique()
     }
 
     /// Adds an element to the front of the list (CoW-aware).
     @inlinable
     public mutating func prepend(_ element: Element) throws(__ListLinkedBoundedError) {
         guard !isFull else { throw .overflow }
-        makeUnique()
-        try! _buffer.insertFront(element)
+        ensureUnique()
+        try! _buffer.insert.front(element)
     }
 
     /// Adds an element to the back of the list (CoW-aware).
     @inlinable
     public mutating func append(_ element: Element) throws(__ListLinkedBoundedError) {
         guard !isFull else { throw .overflow }
-        makeUnique()
-        try! _buffer.insertBack(element)
+        ensureUnique()
+        try! _buffer.insert.back(element)
     }
 
     /// Removes and returns the first element (CoW-aware).
     @inlinable
     @discardableResult
     public mutating func popFirst() -> Element? {
-        makeUnique()
-        return _buffer.removeFront()
+        ensureUnique()
+        return _buffer.remove.front()
     }
 
     /// Removes and returns the last element (CoW-aware).
     @inlinable
     @discardableResult
     public mutating func popLast() -> Element? {
-        makeUnique()
-        return _buffer.removeBack()
+        ensureUnique()
+        return _buffer.remove.back()
     }
 
     /// Removes all elements (CoW-aware).
     @inlinable
     public mutating func clear() {
-        makeUnique()
+        ensureUnique()
         _buffer.removeAll()
     }
 }

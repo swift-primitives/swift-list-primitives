@@ -101,18 +101,18 @@ extension List where Element: ~Copyable {
             public enum Reversed {}
 
             /// The maximum number of elements the list can hold.
-            public let capacity: Int
+            public let capacity: Index_Primitives.Index<Element>.Count
 
             /// Creates a list with the specified capacity.
             ///
             /// - Parameter capacity: Maximum number of elements. Must be non-negative.
             /// - Throws: ``Bounded/Error/invalidCapacity`` if capacity is negative.
             @inlinable
-            public init(capacity: Int) throws(__ListLinkedBoundedError) {
-                guard capacity > 0 else {
+            public init(capacity: Index_Primitives.Index<Element>.Count) throws(__ListLinkedBoundedError) {
+                guard capacity > .zero else {
                     throw .invalidCapacity
                 }
-                self._buffer = try! .create(capacity: capacity)
+                self._buffer = try! .create(capacity: capacity.retag())
                 self.capacity = capacity
             }
         }

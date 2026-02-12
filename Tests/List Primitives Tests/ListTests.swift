@@ -10,6 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 import Testing
+import List_Primitives_Test_Support
 
 @testable import List_Primitives
 
