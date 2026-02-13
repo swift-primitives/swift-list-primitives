@@ -255,7 +255,7 @@ where Tag == List<Element>.Linked<n>.Bounded.Reversed,
 
 extension List.Linked.Bounded: Swift.Sequence where Element: Copyable {
     /// An iterator over the elements of a bounded linked list.
-    public struct Iterator: IteratorProtocol {
+    public struct Iterator: Sequence.Iterator.`Protocol`, IteratorProtocol {
         @usableFromInline
         var _inner: Buffer<Element>.Linked<N>.Iterator
 

@@ -86,7 +86,7 @@ extension List.Linked {
 
 extension List.Linked: Swift.Sequence where Element: Copyable {
     /// An iterator over the elements of a linked list.
-    public struct Iterator: IteratorProtocol {
+    public struct Iterator: Sequence.Iterator.`Protocol`, IteratorProtocol {
         @usableFromInline
         package var _inner: Buffer<Element>.Linked<N>.Iterator
 
