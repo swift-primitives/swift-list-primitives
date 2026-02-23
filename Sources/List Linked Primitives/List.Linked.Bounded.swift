@@ -165,13 +165,13 @@ extension List.Linked.Bounded where Element: ~Copyable {
     ///
     /// Use `peek.first` or `peek.last` to access elements via borrowing closures.
     ///
-    /// - Note: Requires `var` binding (`mutating _read`). For `Copyable` elements,
+    /// - Note: Works with `let` or `var` binding (non-mutating `_read`). For `Copyable` elements,
     ///   use ``first`` and ``last`` properties directly.
     @inlinable
     public var peek: Property<Peek, Self>.View.Read.Typed<Element>.Valued<N> {
-        mutating _read {
-            yield unsafe Property<Peek, Self>.View.Read.Typed<Element>.Valued<N>(
-                UnsafePointer(Property<Peek, Self>.View(&self).base)
+        _read {
+            yield Property<Peek, Self>.View.Read.Typed<Element>.Valued<N>(
+                borrowing: self
             )
         }
     }
@@ -225,13 +225,13 @@ extension List.Linked.Bounded where Element: ~Copyable {
     /// Provides a reversed view of the list for iteration.
     ///
     /// - Precondition: N >= 2 (doubly-linked)
-    /// - Note: Requires `var` binding (`mutating _read`).
+    /// - Note: Works with `let` or `var` binding (non-mutating `_read`).
     @inlinable
     public var reversed: Property<Reversed, Self>.View.Read.Typed<Element>.Valued<N> {
-        mutating _read {
+        _read {
             precondition(N >= 2, "reversed requires N >= 2 (doubly-linked)")
-            yield unsafe Property<Reversed, Self>.View.Read.Typed<Element>.Valued<N>(
-                UnsafePointer(Property<Reversed, Self>.View(&self).base)
+            yield Property<Reversed, Self>.View.Read.Typed<Element>.Valued<N>(
+                borrowing: self
             )
         }
     }
