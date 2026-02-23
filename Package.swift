@@ -42,6 +42,7 @@ let package = Package(
             name: "List Primitives Core",
             dependencies: [
                 .product(name: "Buffer Linked Primitives", package: "swift-buffer-primitives"),
+                .product(name: "Buffer Linked Inline Primitives", package: "swift-buffer-primitives"),
                 .product(name: "Index Primitives", package: "swift-index-primitives"),
                 .product(name: "Input Primitives", package: "swift-input-primitives"),
                 .product(name: "Collection Primitives", package: "swift-collection-primitives"),
@@ -53,6 +54,7 @@ let package = Package(
             name: "List Linked Primitives",
             dependencies: [
                 "List Primitives Core",
+                .product(name: "Buffer Linked Inline Primitives", package: "swift-buffer-primitives"),
             ]
         ),
         // Umbrella: Re-exports Core + Linked

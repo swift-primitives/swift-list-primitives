@@ -10,6 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 public import Buffer_Linked_Primitives
+public import Buffer_Linked_Inline_Primitives
 
 extension List where Element: ~Copyable {
 
