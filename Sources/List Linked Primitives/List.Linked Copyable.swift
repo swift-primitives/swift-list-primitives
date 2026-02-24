@@ -82,6 +82,31 @@ extension List.Linked {
     }
 }
 
+// MARK: - Conditional Drain
+
+extension List.Linked where Element: Copyable {
+    /// Drains elements front-to-back while the predicate returns true.
+    ///
+    /// Repeatedly peeks at the first element; if the predicate returns true,
+    /// removes and passes it to body; if false, stops.
+    /// The list survives with remaining elements intact.
+    ///
+    /// - Parameters:
+    ///   - predicate: A closure that receives a borrowed reference to the first element.
+    ///     Return `true` to drain it, `false` to stop.
+    ///   - body: A closure that receives each drained element with ownership.
+    /// - Complexity: O(k) where k is the number of elements drained.
+    @inlinable
+    public mutating func drain(
+        while predicate: (borrowing Element) -> Bool,
+        _ body: (consuming Element) -> Void
+    ) {
+        while let element = first, predicate(element) {
+            body(popFirst()!)
+        }
+    }
+}
+
 // MARK: - Sequence (Copyable elements only)
 
 extension List.Linked: Swift.Sequence where Element: Copyable {

@@ -961,3 +961,213 @@ struct ListLinkedSinglyVariantsTests {
         #expect(list.count == 2)
     }
 }
+
+// MARK: - drain(while:_:) Tests
+
+@Suite("drain(while:_:)")
+struct DrainWhileTests {
+
+    // MARK: - List.Linked
+
+    @Test("List.Linked drains some elements front-to-back")
+    func linkedDrainWhileSome() {
+        var list = List<Int>.Linked<2>()
+        for e in [1, 2, 3, 4, 5] { list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 < 4 }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.count == 2)
+    }
+
+    @Test("List.Linked drains zero elements")
+    func linkedDrainWhileNone() {
+        var list = List<Int>.Linked<2>()
+        for e in [1, 2, 3] { list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 > 100 }) { drained.append($0) }
+        #expect(drained.isEmpty)
+        #expect(list.count == 3)
+    }
+
+    @Test("List.Linked drains all elements")
+    func linkedDrainWhileAll() {
+        var list = List<Int>.Linked<2>()
+        for e in [1, 2, 3] { list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.isEmpty)
+    }
+
+    @Test("List.Linked drain on empty list")
+    func linkedDrainWhileEmpty() {
+        var list = List<Int>.Linked<2>()
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained.isEmpty)
+    }
+
+    @Test("List.Linked remaining elements intact after partial drain")
+    func linkedRemainingIntact() {
+        var list = List<Int>.Linked<2>()
+        for e in [1, 2, 3, 4, 5] { list.append(e) }
+        list.drain(while: { $0 < 4 }) { _ in }
+        #expect(list.first == 4)
+        #expect(list.popFirst() == 4)
+        #expect(list.popFirst() == 5)
+        #expect(list.isEmpty)
+    }
+
+    // MARK: - List.Linked.Bounded
+
+    @Test("Bounded drains some elements front-to-back")
+    func boundedDrainWhileSome() throws {
+        var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
+        for e in [1, 2, 3, 4, 5] { try list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 < 4 }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.count == 2)
+    }
+
+    @Test("Bounded drains zero elements")
+    func boundedDrainWhileNone() throws {
+        var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
+        for e in [1, 2, 3] { try list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 > 100 }) { drained.append($0) }
+        #expect(drained.isEmpty)
+        #expect(list.count == 3)
+    }
+
+    @Test("Bounded drains all elements")
+    func boundedDrainWhileAll() throws {
+        var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
+        for e in [1, 2, 3] { try list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.isEmpty)
+    }
+
+    @Test("Bounded drain on empty list")
+    func boundedDrainWhileEmpty() throws {
+        var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained.isEmpty)
+    }
+
+    @Test("Bounded remaining elements intact after partial drain")
+    func boundedRemainingIntact() throws {
+        var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
+        for e in [1, 2, 3, 4, 5] { try list.append(e) }
+        list.drain(while: { $0 < 4 }) { _ in }
+        #expect(list.first == 4)
+        #expect(list.popFirst() == 4)
+        #expect(list.popFirst() == 5)
+        #expect(list.isEmpty)
+    }
+
+    // MARK: - List.Linked.Inline
+
+    @Test("Inline drains some elements front-to-back")
+    func inlineDrainWhileSome() throws {
+        var list = List<Int>.Linked<2>.Inline<8>()
+        for e in [1, 2, 3, 4, 5] { try list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 < 4 }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.count == 2)
+    }
+
+    @Test("Inline drains zero elements")
+    func inlineDrainWhileNone() throws {
+        var list = List<Int>.Linked<2>.Inline<8>()
+        for e in [1, 2, 3] { try list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 > 100 }) { drained.append($0) }
+        #expect(drained.isEmpty)
+        #expect(list.count == 3)
+    }
+
+    @Test("Inline drains all elements")
+    func inlineDrainWhileAll() throws {
+        var list = List<Int>.Linked<2>.Inline<8>()
+        for e in [1, 2, 3] { try list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.isEmpty == true)
+    }
+
+    @Test("Inline drain on empty list")
+    func inlineDrainWhileEmpty() {
+        var list = List<Int>.Linked<2>.Inline<8>()
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained.isEmpty)
+    }
+
+    @Test("Inline remaining elements intact after partial drain")
+    func inlineRemainingIntact() throws {
+        var list = List<Int>.Linked<2>.Inline<8>()
+        for e in [1, 2, 3, 4, 5] { try list.append(e) }
+        list.drain(while: { $0 < 4 }) { _ in }
+        #expect(list.first == 4)
+        #expect(list.popFirst() == 4)
+        #expect(list.popFirst() == 5)
+        #expect(list.isEmpty == true)
+    }
+
+    // MARK: - List.Linked.Small
+
+    @Test("Small drains some elements front-to-back")
+    func smallDrainWhileSome() {
+        var list = List<Int>.Linked<2>.Small<8>()
+        for e in [1, 2, 3, 4, 5] { list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 < 4 }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.count == 2)
+    }
+
+    @Test("Small drains zero elements")
+    func smallDrainWhileNone() {
+        var list = List<Int>.Linked<2>.Small<8>()
+        for e in [1, 2, 3] { list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { $0 > 100 }) { drained.append($0) }
+        #expect(drained.isEmpty)
+        #expect(list.count == 3)
+    }
+
+    @Test("Small drains all elements")
+    func smallDrainWhileAll() {
+        var list = List<Int>.Linked<2>.Small<8>()
+        for e in [1, 2, 3] { list.append(e) }
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained == [1, 2, 3])
+        #expect(list.isEmpty == true)
+    }
+
+    @Test("Small drain on empty list")
+    func smallDrainWhileEmpty() {
+        var list = List<Int>.Linked<2>.Small<8>()
+        var drained: [Int] = []
+        list.drain(while: { _ in true }) { drained.append($0) }
+        #expect(drained.isEmpty)
+    }
+
+    @Test("Small remaining elements intact after partial drain")
+    func smallRemainingIntact() {
+        var list = List<Int>.Linked<2>.Small<8>()
+        for e in [1, 2, 3, 4, 5] { list.append(e) }
+        list.drain(while: { $0 < 4 }) { _ in }
+        #expect(list.first == 4)
+        #expect(list.popFirst() == 4)
+        #expect(list.popFirst() == 5)
+        #expect(list.isEmpty == true)
+    }
+}

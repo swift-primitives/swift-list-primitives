@@ -213,6 +213,22 @@ extension List.Linked.Bounded {
     }
 }
 
+// MARK: - Conditional Drain
+
+extension List.Linked.Bounded where Element: Copyable {
+    /// Drains elements front-to-back while the predicate returns true.
+    @inlinable
+    public mutating func drain(
+        while predicate: (borrowing Element) -> Bool,
+        _ body: (consuming Element) -> Void
+    ) {
+        ensureUnique()
+        while let element = first, predicate(element) {
+            body(popFirst()!)
+        }
+    }
+}
+
 // MARK: - ForEach
 
 extension List.Linked.Bounded where Element: ~Copyable {

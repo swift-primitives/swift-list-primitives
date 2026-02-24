@@ -184,6 +184,21 @@ extension List.Linked.Small where Element: Copyable {
     }
 }
 
+// MARK: - Conditional Drain
+
+extension List.Linked.Small where Element: Copyable {
+    /// Drains elements front-to-back while the predicate returns true.
+    @inlinable
+    public mutating func drain(
+        while predicate: (borrowing Element) -> Bool,
+        _ body: (consuming Element) -> Void
+    ) {
+        while let element = first, predicate(element) {
+            body(popFirst()!)
+        }
+    }
+}
+
 // MARK: - ForEach (Copyable convenience)
 
 extension List.Linked.Small where Element: Copyable {
