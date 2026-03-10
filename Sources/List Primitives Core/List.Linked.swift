@@ -147,6 +147,12 @@ extension List where Element: ~Copyable {
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Inline<capacity>
 
+            // WORKAROUND: Forces compiler to execute deinit body.
+            // TRACKING: swiftlang/swift #86652 variant (nested ~Copyable deinit chain)
+            // WHEN TO REMOVE: When the compiler correctly destroys ~Copyable structs
+            //      with cross-package value-generic stored properties.
+            private var _deinitWorkaround: AnyObject? = nil
+
             // Tag enums for Property.View.Read accessors [PATTERN-022]
             public enum Peek {}
             public enum Reversed {}
@@ -154,6 +160,14 @@ extension List where Element: ~Copyable {
             @inlinable
             package init(_buffer: consuming Buffer<Element>.Linked<N>.Inline<capacity>) {
                 self._buffer = _buffer
+            }
+
+            deinit {
+                // WORKAROUND: Manually clean up elements via the mutating path.
+                // TRACKING: swiftlang/swift #86652 variant
+                unsafe withUnsafePointer(to: _buffer) { ptr in
+                    unsafe UnsafeMutablePointer(mutating: ptr).pointee.removeAll()
+                }
             }
         }
 
@@ -187,9 +201,23 @@ extension List where Element: ~Copyable {
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Small<inlineCapacity>
 
+            // WORKAROUND: Forces compiler to execute deinit body.
+            // TRACKING: swiftlang/swift #86652 variant (nested ~Copyable deinit chain)
+            // WHEN TO REMOVE: When the compiler correctly destroys ~Copyable structs
+            //      with cross-package value-generic stored properties.
+            private var _deinitWorkaround: AnyObject? = nil
+
             @inlinable
             package init(_buffer: consuming Buffer<Element>.Linked<N>.Small<inlineCapacity>) {
                 self._buffer = _buffer
+            }
+
+            deinit {
+                // WORKAROUND: Manually clean up elements via the mutating path.
+                // TRACKING: swiftlang/swift #86652 variant
+                unsafe withUnsafePointer(to: _buffer) { ptr in
+                    unsafe UnsafeMutablePointer(mutating: ptr).pointee.removeAll()
+                }
             }
 
             /// Whether the list is currently using heap storage.
