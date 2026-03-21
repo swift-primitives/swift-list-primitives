@@ -147,10 +147,13 @@ extension List where Element: ~Copyable {
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Inline<capacity>
 
-            // WORKAROUND: Forces compiler to execute deinit body.
-            // TRACKING: swiftlang/swift #86652 variant (nested ~Copyable deinit chain)
-            // WHEN TO REMOVE: When the compiler correctly destroys ~Copyable structs
-            //      with cross-package value-generic stored properties.
+            // WORKAROUND: swiftlang/swift#86652 — @_rawLayout triviality misclassification.
+            // Forces compiler to recognize type as non-trivially destructible so deinit executes.
+            // COST: 8 bytes overhead per instance.
+            // REMOVAL TEST: swift-buffer-primitives/Experiments/rawlayout-access-level-trigger/
+            //   Build with `public` access under -O. If it passes, remove this field
+            //   and the manual cleanup in deinit.
+            // TRACKING: swift-buffer-primitives/Research/rawlayout-release-crash-investigation.md
             private var _deinitWorkaround: AnyObject? = nil
 
             // Tag enums for Property.View.Read accessors [PATTERN-022]
@@ -201,10 +204,13 @@ extension List where Element: ~Copyable {
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Small<inlineCapacity>
 
-            // WORKAROUND: Forces compiler to execute deinit body.
-            // TRACKING: swiftlang/swift #86652 variant (nested ~Copyable deinit chain)
-            // WHEN TO REMOVE: When the compiler correctly destroys ~Copyable structs
-            //      with cross-package value-generic stored properties.
+            // WORKAROUND: swiftlang/swift#86652 — @_rawLayout triviality misclassification.
+            // Forces compiler to recognize type as non-trivially destructible so deinit executes.
+            // COST: 8 bytes overhead per instance.
+            // REMOVAL TEST: swift-buffer-primitives/Experiments/rawlayout-access-level-trigger/
+            //   Build with `public` access under -O. If it passes, remove this field
+            //   and the manual cleanup in deinit.
+            // TRACKING: swift-buffer-primitives/Research/rawlayout-release-crash-investigation.md
             private var _deinitWorkaround: AnyObject? = nil
 
             @inlinable
