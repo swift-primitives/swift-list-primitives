@@ -280,8 +280,8 @@ extension List.Linked.Bounded: Swift.Sequence where Element: Copyable {
             self._inner = inner
         }
 
-        @_lifetime(&self)
         @inlinable
+        @_lifetime(&self)
         public mutating func nextSpan(maximumCount: Cardinal) -> Span<Element> {
             _inner.nextSpan(maximumCount: maximumCount)
         }
