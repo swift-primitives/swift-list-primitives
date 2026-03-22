@@ -144,9 +144,6 @@ extension List where Element: ~Copyable {
         /// `Inline` is unconditionally `~Copyable` (move-only) because it contains
         /// `Storage.Inline` which uses `@_rawLayout`.
         public struct Inline<let capacity: Int>: ~Copyable {
-            @usableFromInline
-            package var _buffer: Buffer<Element>.Linked<N>.Inline<capacity>
-
             // WORKAROUND: swiftlang/swift#86652 — @_rawLayout triviality misclassification.
             // Forces compiler to recognize type as non-trivially destructible so deinit executes.
             // COST: 8 bytes overhead per instance.
@@ -154,7 +151,14 @@ extension List where Element: ~Copyable {
             //   Build with `public` access under -O. If it passes, remove this field
             //   and the manual cleanup in deinit.
             // TRACKING: swift-buffer-primitives/Research/rawlayout-release-crash-investigation.md
+            //
+            // NOTE: Must be declared BEFORE _buffer. The buffer transitively
+            // contains @_rawLayout storage which must be last in memory layout.
+            // See Storage.Inline for the Swift 6.2.4 IRGen crash details.
             private var _deinitWorkaround: AnyObject? = nil
+
+            @usableFromInline
+            package var _buffer: Buffer<Element>.Linked<N>.Inline<capacity>
 
             // Tag enums for Property.View.Read accessors [PATTERN-022]
             public enum Peek {}
@@ -201,17 +205,12 @@ extension List where Element: ~Copyable {
         /// `Small` is unconditionally `~Copyable` because it contains inline storage.
         @safe
         public struct Small<let inlineCapacity: Int>: ~Copyable {
+            // WORKAROUND: swiftlang/swift#86652 — see Inline's comment.
+            // NOTE: Must be declared BEFORE _buffer.
+            private var _deinitWorkaround: AnyObject? = nil
+
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Small<inlineCapacity>
-
-            // WORKAROUND: swiftlang/swift#86652 — @_rawLayout triviality misclassification.
-            // Forces compiler to recognize type as non-trivially destructible so deinit executes.
-            // COST: 8 bytes overhead per instance.
-            // REMOVAL TEST: swift-buffer-primitives/Experiments/rawlayout-access-level-trigger/
-            //   Build with `public` access under -O. If it passes, remove this field
-            //   and the manual cleanup in deinit.
-            // TRACKING: swift-buffer-primitives/Research/rawlayout-release-crash-investigation.md
-            private var _deinitWorkaround: AnyObject? = nil
 
             @inlinable
             package init(_buffer: consuming Buffer<Element>.Linked<N>.Small<inlineCapacity>) {
