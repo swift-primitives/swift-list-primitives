@@ -10,7 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 public import Buffer_Linked_Primitives
-public import Property_Primitives
+internal import Property_Primitives
 
 // MARK: - Properties
 
