@@ -123,7 +123,7 @@ extension List.Linked.Bounded where Element: Copyable {
     public mutating func prepend(_ element: Element) throws(__ListLinkedBoundedError) {
         guard !isFull else { throw .overflow }
         ensureUnique()
-        try! _buffer.insert.front(element)
+        _buffer.insert.front(element)
     }
 
     /// Adds an element to the back of the list (CoW-aware).
@@ -131,7 +131,7 @@ extension List.Linked.Bounded where Element: Copyable {
     public mutating func append(_ element: Element) throws(__ListLinkedBoundedError) {
         guard !isFull else { throw .overflow }
         ensureUnique()
-        try! _buffer.insert.back(element)
+        _buffer.insert.back(element)
     }
 
     /// Removes and returns the first element (CoW-aware).
