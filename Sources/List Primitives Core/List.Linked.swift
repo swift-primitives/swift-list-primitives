@@ -143,20 +143,8 @@ extension List where Element: ~Copyable {
         ///
         /// `Inline` is unconditionally `~Copyable` (move-only) because it contains
         /// `Storage.Inline` which uses `@_rawLayout`.
+        /// Element cleanup is handled by `Storage.Inline`'s deinit.
         public struct Inline<let capacity: Int>: ~Copyable {
-            // WORKAROUND: swiftlang/swift#86652 — @_rawLayout triviality misclassification.
-            // Forces compiler to recognize type as non-trivially destructible so deinit executes.
-            // COST: 8 bytes overhead per instance.
-            // REMOVAL TEST: swift-buffer-primitives/Experiments/rawlayout-access-level-trigger/
-            //   Build with `public` access under -O. If it passes, remove this field
-            //   and the manual cleanup in deinit.
-            // TRACKING: swift-buffer-primitives/Research/rawlayout-release-crash-investigation.md
-            //
-            // NOTE: Must be declared BEFORE _buffer. The buffer transitively
-            // contains @_rawLayout storage which must be last in memory layout.
-            // See Storage.Inline for the Swift 6.2.4 IRGen crash details.
-            private var _deinitWorkaround: AnyObject? = nil
-
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Inline<capacity>
 
@@ -167,14 +155,6 @@ extension List where Element: ~Copyable {
             @inlinable
             package init(_buffer: consuming Buffer<Element>.Linked<N>.Inline<capacity>) {
                 self._buffer = _buffer
-            }
-
-            deinit {
-                // WORKAROUND: Manually clean up elements via the mutating path.
-                // TRACKING: swiftlang/swift #86652 variant
-                unsafe withUnsafePointer(to: _buffer) { ptr in
-                    unsafe UnsafeMutablePointer(mutating: ptr).pointee.removeAll()
-                }
             }
         }
 
@@ -203,26 +183,16 @@ extension List where Element: ~Copyable {
         /// ## Non-Copyable Container
         ///
         /// `Small` is unconditionally `~Copyable` because it contains inline storage.
+        /// Element cleanup is handled by `Storage.Inline`'s deinit (inline path)
+        /// or `Storage.Heap`'s deinit (spilled path).
         @safe
         public struct Small<let inlineCapacity: Int>: ~Copyable {
-            // WORKAROUND: swiftlang/swift#86652 — see Inline's comment.
-            // NOTE: Must be declared BEFORE _buffer.
-            private var _deinitWorkaround: AnyObject? = nil
-
             @usableFromInline
             package var _buffer: Buffer<Element>.Linked<N>.Small<inlineCapacity>
 
             @inlinable
             package init(_buffer: consuming Buffer<Element>.Linked<N>.Small<inlineCapacity>) {
                 self._buffer = _buffer
-            }
-
-            deinit {
-                // WORKAROUND: Manually clean up elements via the mutating path.
-                // TRACKING: swiftlang/swift #86652 variant
-                unsafe withUnsafePointer(to: _buffer) { ptr in
-                    unsafe UnsafeMutablePointer(mutating: ptr).pointee.removeAll()
-                }
             }
 
             /// Whether the list is currently using heap storage.
