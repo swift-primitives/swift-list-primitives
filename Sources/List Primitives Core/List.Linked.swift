@@ -241,7 +241,85 @@ extension List.Linked.Bounded: Copyable where Element: Copyable {}
 
 // MARK: - Sendable
 
-extension List.Linked: @unchecked Sendable where Element: Sendable {}
-extension List.Linked.Bounded: @unchecked Sendable where Element: Sendable {}
-extension List.Linked.Inline: @unchecked Sendable where Element: Sendable {}
-extension List.Linked.Small: @unchecked Sendable where Element: Sendable {}
+/// Sendable conformance for `List.Linked`.
+///
+/// ## Safety Invariant
+///
+/// `List.Linked<N>` is `~Copyable` (conditionally `Copyable` when
+/// `Element: Copyable` via COW). Under the `~Copyable` path the list is
+/// a single owner; under COW the backing arena storage handles its own
+/// aliasing via reference counting. Sending across isolation boundaries
+/// is sound because either ownership is unique (moved) or the COW backing
+/// preserves value semantics.
+///
+/// ## Intended Use
+///
+/// - Transferring a prepared linked list to a worker thread.
+/// - Handing off a linked list of `~Copyable` resources across actors.
+/// - Pipeline stages where each stage owns the list in turn.
+///
+/// ## Non-Goals
+///
+/// - Does not synchronize mutation — single-owner semantics are required.
+/// - Does not provide lock-free list operations.
+/// - Not suitable as a shared concurrent queue.
+extension List.Linked: @unsafe @unchecked Sendable where Element: Sendable {}
+
+/// Sendable conformance for `List.Linked.Bounded`.
+///
+/// ## Safety Invariant
+///
+/// `List.Linked.Bounded` is `~Copyable` (conditionally `Copyable` when
+/// `Element: Copyable`). The fixed capacity is pre-allocated; transfer
+/// across threads moves the full buffer under unique ownership.
+///
+/// ## Intended Use
+///
+/// - Transferring a bounded linked list to a consumer with predictable
+///   memory behavior.
+/// - Handing off bounded resource queues between phases of a pipeline.
+///
+/// ## Non-Goals
+///
+/// - Not a concurrent bounded queue; external synchronization required.
+extension List.Linked.Bounded: @unsafe @unchecked Sendable where Element: Sendable {}
+
+/// Sendable conformance for `List.Linked.Inline`.
+///
+/// ## Safety Invariant
+///
+/// `List.Linked.Inline<capacity>` is unconditionally `~Copyable` (it
+/// contains `Storage.Inline` which uses `@_rawLayout`). Unique ownership
+/// ensures the inline bytes transfer intact across isolation boundaries.
+///
+/// ## Intended Use
+///
+/// - Zero-allocation linked list moved from builder to consumer.
+/// - Embedded contexts where compile-time capacity is known and the list
+///   crosses one isolation boundary during setup.
+///
+/// ## Non-Goals
+///
+/// - Not shareable; inline storage is tied to one owner at a time.
+/// - No synchronization; single-owner is the only supported model.
+extension List.Linked.Inline: @unsafe @unchecked Sendable where Element: Sendable {}
+
+/// Sendable conformance for `List.Linked.Small`.
+///
+/// ## Safety Invariant
+///
+/// `List.Linked.Small<inlineCapacity>` is unconditionally `~Copyable`
+/// (inline-plus-spill storage using `Storage.Inline`). Unique ownership
+/// ensures the inline bytes and any spilled heap allocation transfer
+/// together across isolation boundaries.
+///
+/// ## Intended Use
+///
+/// - Small-size-optimized linked lists handed from builder to consumer
+///   where typical workloads fit inline but can spill to heap.
+///
+/// ## Non-Goals
+///
+/// - Not safe for concurrent mutation on either the inline or spilled path.
+/// - Spill transitions are not synchronized against external observers.
+extension List.Linked.Small: @unsafe @unchecked Sendable where Element: Sendable {}
