@@ -153,9 +153,7 @@ extension List.Linked where Element: ~Copyable {
     @inlinable
     public var peek: Property<Peek, Self>.View.Read.Typed<Element>.Valued<N> {
         _read {
-            yield Property<Peek, Self>.View.Read.Typed<Element>.Valued<N>(
-                borrowing: self
-            )
+            yield Property<Peek, Self>.View.Read.Typed<Element>.Valued<N>(self)
         }
     }
 }
@@ -224,9 +222,7 @@ extension List.Linked where Element: ~Copyable {
     public var reversed: Property<Reversed, Self>.View.Read.Typed<Element>.Valued<N> {
         _read {
             precondition(N >= 2, "reversed requires N >= 2 (doubly-linked)")
-            yield Property<Reversed, Self>.View.Read.Typed<Element>.Valued<N>(
-                borrowing: self
-            )
+            yield Property<Reversed, Self>.View.Read.Typed<Element>.Valued<N>(self)
         }
     }
 }
