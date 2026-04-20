@@ -31,8 +31,8 @@ struct ListDeinitTests {
 
     // MARK: - List.Linked.Inline (doubly-linked, N=2)
 
-    @Test("Inline deinit destroys all elements")
-    func inlineDeinitDestroysAll() throws {
+    @Test
+    func `Inline deinit destroys all elements`() throws {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<2>.Inline<8>()
@@ -43,8 +43,8 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 3)
     }
 
-    @Test("Inline deinit after partial pop destroys remaining")
-    func inlineDeinitAfterPartialPop() throws {
+    @Test
+    func `Inline deinit after partial pop destroys remaining`() throws {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<2>.Inline<8>()
@@ -57,15 +57,15 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 3)
     }
 
-    @Test("Inline empty deinit does not crash")
-    func inlineEmptyDeinit() {
+    @Test
+    func `Inline empty deinit does not crash`() {
         do {
             _ = List<TrackedElement>.Linked<2>.Inline<8>()
         }
     }
 
-    @Test("Inline singly-linked deinit destroys all elements")
-    func inlineSinglyDeinitDestroysAll() throws {
+    @Test
+    func `Inline singly-linked deinit destroys all elements`() throws {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<1>.Inline<8>()
@@ -78,8 +78,8 @@ struct ListDeinitTests {
 
     // MARK: - List.Linked.Small (doubly-linked, N=2)
 
-    @Test("Small deinit destroys all elements in inline mode")
-    func smallDeinitInlineMode() {
+    @Test
+    func `Small deinit destroys all elements in inline mode`() {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<2>.Small<4>()
@@ -90,8 +90,8 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 3)
     }
 
-    @Test("Small deinit destroys all elements after spill")
-    func smallDeinitAfterSpill() {
+    @Test
+    func `Small deinit destroys all elements after spill`() {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<2>.Small<2>()
@@ -104,8 +104,8 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 4)
     }
 
-    @Test("Small deinit after partial pop destroys remaining")
-    func smallDeinitAfterPartialPop() {
+    @Test
+    func `Small deinit after partial pop destroys remaining`() {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<2>.Small<4>()
@@ -118,8 +118,8 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 3)
     }
 
-    @Test("Small deinit after spill and partial pop destroys remaining")
-    func smallDeinitAfterSpillAndPartialPop() {
+    @Test
+    func `Small deinit after spill and partial pop destroys remaining`() {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<2>.Small<2>()
@@ -135,15 +135,15 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 4)
     }
 
-    @Test("Small empty deinit does not crash")
-    func smallEmptyDeinit() {
+    @Test
+    func `Small empty deinit does not crash`() {
         do {
             _ = List<TrackedElement>.Linked<2>.Small<4>()
         }
     }
 
-    @Test("Small singly-linked deinit destroys all elements")
-    func smallSinglyDeinitDestroysAll() {
+    @Test
+    func `Small singly-linked deinit destroys all elements`() {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<1>.Small<4>()
@@ -154,8 +154,8 @@ struct ListDeinitTests {
         #expect(tracker.deinitCount == 3)
     }
 
-    @Test("Small singly-linked deinit destroys all elements after spill")
-    func smallSinglyDeinitAfterSpill() {
+    @Test
+    func `Small singly-linked deinit destroys all elements after spill`() {
         let tracker = Tracker()
         do {
             var list = List<TrackedElement>.Linked<1>.Small<2>()

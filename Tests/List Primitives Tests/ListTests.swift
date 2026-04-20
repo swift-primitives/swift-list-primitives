@@ -19,15 +19,15 @@ import List_Primitives_Test_Support
 @Suite("List.Linked<2> (Doubly-Linked)")
 struct ListLinkedDoublyTests {
 
-    @Test("Initialize empty")
-    func initializeEmpty() {
+    @Test
+    func `Initialize empty`() {
         let list = List<Int>.Linked<2>()
         #expect(list.count == 0)
         #expect(list.isEmpty == true)
     }
 
-    @Test("Prepend single element")
-    func prependSingle() {
+    @Test
+    func `Prepend single element`() {
         var list = List<Int>.Linked<2>()
         list.prepend(42)
         #expect(list.count == 1)
@@ -36,8 +36,8 @@ struct ListLinkedDoublyTests {
         #expect(list.last == 42)
     }
 
-    @Test("Append single element")
-    func appendSingle() {
+    @Test
+    func `Append single element`() {
         var list = List<Int>.Linked<2>()
         list.append(42)
         #expect(list.count == 1)
@@ -45,8 +45,8 @@ struct ListLinkedDoublyTests {
         #expect(list.last == 42)
     }
 
-    @Test("Prepend multiple elements")
-    func prependMultiple() {
+    @Test
+    func `Prepend multiple elements`() {
         var list = List<Int>.Linked<2>()
         list.prepend(3)
         list.prepend(2)
@@ -56,8 +56,8 @@ struct ListLinkedDoublyTests {
         #expect(list.last == 3)
     }
 
-    @Test("Append multiple elements")
-    func appendMultiple() {
+    @Test
+    func `Append multiple elements`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -67,8 +67,8 @@ struct ListLinkedDoublyTests {
         #expect(list.last == 3)
     }
 
-    @Test("Mixed prepend and append")
-    func mixedPrependAppend() {
+    @Test
+    func `Mixed prepend and append`() {
         var list = List<Int>.Linked<2>()
         list.append(2)
         list.prepend(1)
@@ -80,24 +80,24 @@ struct ListLinkedDoublyTests {
         #expect(list.last == 3)
     }
 
-    @Test("Pop first from empty")
-    func popFirstEmpty() {
+    @Test
+    func `Pop first from empty`() {
         var list = List<Int>.Linked<2>()
         let result = list.popFirst()
         #expect(result == nil)
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop last from empty")
-    func popLastEmpty() {
+    @Test
+    func `Pop last from empty`() {
         var list = List<Int>.Linked<2>()
         let result = list.popLast()
         #expect(result == nil)
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop first single element")
-    func popFirstSingle() {
+    @Test
+    func `Pop first single element`() {
         var list = List<Int>.Linked<2>()
         list.append(42)
         let result = list.popFirst()
@@ -107,8 +107,8 @@ struct ListLinkedDoublyTests {
         #expect(list.last == nil)
     }
 
-    @Test("Pop last single element")
-    func popLastSingle() {
+    @Test
+    func `Pop last single element`() {
         var list = List<Int>.Linked<2>()
         list.append(42)
         let result = list.popLast()
@@ -116,8 +116,8 @@ struct ListLinkedDoublyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop first multiple elements")
-    func popFirstMultiple() {
+    @Test
+    func `Pop first multiple elements`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -134,8 +134,8 @@ struct ListLinkedDoublyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop last multiple elements")
-    func popLastMultiple() {
+    @Test
+    func `Pop last multiple elements`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -152,8 +152,8 @@ struct ListLinkedDoublyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Clear")
-    func clear() {
+    @Test
+    func `Clear`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -167,8 +167,8 @@ struct ListLinkedDoublyTests {
         #expect(list.last == nil)
     }
 
-    @Test("ForEach")
-    func forEach() {
+    @Test
+    func `ForEach`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -180,8 +180,8 @@ struct ListLinkedDoublyTests {
         #expect(collected == [1, 2, 3])
     }
 
-    @Test("Reversed forEach")
-    func reversedForEach() {
+    @Test
+    func `Reversed forEach`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -193,8 +193,8 @@ struct ListLinkedDoublyTests {
         #expect(collected == [3, 2, 1])
     }
 
-    @Test("Sequence iteration")
-    func sequenceIteration() {
+    @Test
+    func `Sequence iteration`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -208,8 +208,8 @@ struct ListLinkedDoublyTests {
         #expect(collected == [1, 2, 3])
     }
 
-    @Test("Array conversion")
-    func arrayConversion() {
+    @Test
+    func `Array conversion`() {
         var list = List<Int>.Linked<2>()
         list.append(1)
         list.append(2)
@@ -219,8 +219,8 @@ struct ListLinkedDoublyTests {
         #expect(array == [1, 2, 3])
     }
 
-    @Test("Equality")
-    func equality() {
+    @Test
+    func `Equality`() {
         var list1 = List<Int>.Linked<2>()
         list1.append(1)
         list1.append(2)
@@ -240,8 +240,8 @@ struct ListLinkedDoublyTests {
         #expect(list1 != list3)
     }
 
-    @Test("Equality different lengths")
-    func equalityDifferentLengths() {
+    @Test
+    func `Equality different lengths`() {
         var list1 = List<Int>.Linked<2>()
         list1.append(1)
         list1.append(2)
@@ -260,15 +260,15 @@ struct ListLinkedDoublyTests {
 @Suite("List.Linked<1> (Singly-Linked)")
 struct ListLinkedSinglyTests {
 
-    @Test("Initialize empty")
-    func initializeEmpty() {
+    @Test
+    func `Initialize empty`() {
         let list = List<Int>.Linked<1>()
         #expect(list.count == 0)
         #expect(list.isEmpty == true)
     }
 
-    @Test("Prepend single element")
-    func prependSingle() {
+    @Test
+    func `Prepend single element`() {
         var list = List<Int>.Linked<1>()
         list.prepend(42)
         #expect(list.count == 1)
@@ -277,8 +277,8 @@ struct ListLinkedSinglyTests {
         #expect(list.last == 42)
     }
 
-    @Test("Append single element")
-    func appendSingle() {
+    @Test
+    func `Append single element`() {
         var list = List<Int>.Linked<1>()
         list.append(42)
         #expect(list.count == 1)
@@ -286,8 +286,8 @@ struct ListLinkedSinglyTests {
         #expect(list.last == 42)
     }
 
-    @Test("Prepend multiple elements")
-    func prependMultiple() {
+    @Test
+    func `Prepend multiple elements`() {
         var list = List<Int>.Linked<1>()
         list.prepend(3)
         list.prepend(2)
@@ -297,8 +297,8 @@ struct ListLinkedSinglyTests {
         #expect(list.last == 3)
     }
 
-    @Test("Append multiple elements")
-    func appendMultiple() {
+    @Test
+    func `Append multiple elements`() {
         var list = List<Int>.Linked<1>()
         list.append(1)
         list.append(2)
@@ -308,24 +308,24 @@ struct ListLinkedSinglyTests {
         #expect(list.last == 3)
     }
 
-    @Test("Pop first from empty")
-    func popFirstEmpty() {
+    @Test
+    func `Pop first from empty`() {
         var list = List<Int>.Linked<1>()
         let result = list.popFirst()
         #expect(result == nil)
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop last from empty")
-    func popLastEmpty() {
+    @Test
+    func `Pop last from empty`() {
         var list = List<Int>.Linked<1>()
         let result = list.popLast()
         #expect(result == nil)
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop first single element")
-    func popFirstSingle() {
+    @Test
+    func `Pop first single element`() {
         var list = List<Int>.Linked<1>()
         list.append(42)
         let result = list.popFirst()
@@ -333,8 +333,8 @@ struct ListLinkedSinglyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop last single element")
-    func popLastSingle() {
+    @Test
+    func `Pop last single element`() {
         var list = List<Int>.Linked<1>()
         list.append(42)
         let result = list.popLast()
@@ -342,8 +342,8 @@ struct ListLinkedSinglyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop first multiple elements")
-    func popFirstMultiple() {
+    @Test
+    func `Pop first multiple elements`() {
         var list = List<Int>.Linked<1>()
         list.append(1)
         list.append(2)
@@ -360,8 +360,8 @@ struct ListLinkedSinglyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Pop last multiple elements (O(n) traversal)")
-    func popLastMultiple() {
+    @Test
+    func `Pop last multiple elements (O(n) traversal)`() {
         var list = List<Int>.Linked<1>()
         list.append(1)
         list.append(2)
@@ -378,8 +378,8 @@ struct ListLinkedSinglyTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Clear")
-    func clear() {
+    @Test
+    func `Clear`() {
         var list = List<Int>.Linked<1>()
         list.append(1)
         list.append(2)
@@ -391,8 +391,8 @@ struct ListLinkedSinglyTests {
         #expect(list.count == 0)
     }
 
-    @Test("ForEach")
-    func forEach() {
+    @Test
+    func `ForEach`() {
         var list = List<Int>.Linked<1>()
         list.append(1)
         list.append(2)
@@ -404,8 +404,8 @@ struct ListLinkedSinglyTests {
         #expect(collected == [1, 2, 3])
     }
 
-    @Test("Sequence iteration")
-    func sequenceIteration() {
+    @Test
+    func `Sequence iteration`() {
         var list = List<Int>.Linked<1>()
         list.append(1)
         list.append(2)
@@ -419,8 +419,8 @@ struct ListLinkedSinglyTests {
         #expect(collected == [1, 2, 3])
     }
 
-    @Test("Equality")
-    func equality() {
+    @Test
+    func `Equality`() {
         var list1 = List<Int>.Linked<1>()
         list1.append(1)
         list1.append(2)
@@ -446,8 +446,8 @@ struct ListLinkedSinglyTests {
 @Suite("List.Linked.Bounded")
 struct ListLinkedBoundedTests {
 
-    @Test("Initialize with capacity")
-    func initializeWithCapacity() throws {
+    @Test
+    func `Initialize with capacity`() throws {
         let list = try List<Int>.Linked<2>.Bounded(capacity: 10)
         #expect(list.count == 0)
         #expect(list.isEmpty == true)
@@ -455,8 +455,8 @@ struct ListLinkedBoundedTests {
         #expect(list.isFull == false)
     }
 
-    @Test("Prepend and append")
-    func prependAndAppend() throws {
+    @Test
+    func `Prepend and append`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 5)
         try list.prepend(2)
         try list.prepend(1)
@@ -467,8 +467,8 @@ struct ListLinkedBoundedTests {
         #expect(list.last == 3)
     }
 
-    @Test("Overflow on prepend")
-    func overflowOnPrepend() throws {
+    @Test
+    func `Overflow on prepend`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 2)
         try list.prepend(1)
         try list.prepend(2)
@@ -480,8 +480,8 @@ struct ListLinkedBoundedTests {
         }
     }
 
-    @Test("Overflow on append")
-    func overflowOnAppend() throws {
+    @Test
+    func `Overflow on append`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 2)
         try list.append(1)
         try list.append(2)
@@ -493,8 +493,8 @@ struct ListLinkedBoundedTests {
         }
     }
 
-    @Test("Pop after overflow allows new elements")
-    func popAfterOverflow() throws {
+    @Test
+    func `Pop after overflow allows new elements`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 2)
         try list.append(1)
         try list.append(2)
@@ -505,8 +505,8 @@ struct ListLinkedBoundedTests {
         #expect(list.count == 2)
     }
 
-    @Test("Sequence iteration")
-    func sequenceIteration() throws {
+    @Test
+    func `Sequence iteration`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 5)
         try list.append(1)
         try list.append(2)
@@ -526,16 +526,16 @@ struct ListLinkedBoundedTests {
 @Suite("List.Linked.Inline")
 struct ListLinkedInlineTests {
 
-    @Test("Initialize empty")
-    func initializeEmpty() {
+    @Test
+    func `Initialize empty`() {
         let list = List<Int>.Linked<2>.Inline<8>()
         #expect(list.count == 0)
         #expect(list.isEmpty == true)
         #expect(list.isFull == false)
     }
 
-    @Test("Prepend and append")
-    func prependAndAppend() throws {
+    @Test
+    func `Prepend and append`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         try list.prepend(2)
         try list.prepend(1)
@@ -546,8 +546,8 @@ struct ListLinkedInlineTests {
         #expect(list.last == 3)
     }
 
-    @Test("Overflow on prepend")
-    func overflowOnPrepend() throws {
+    @Test
+    func `Overflow on prepend`() throws {
         var list = List<Int>.Linked<2>.Inline<2>()
         try list.prepend(1)
         try list.prepend(2)
@@ -559,8 +559,8 @@ struct ListLinkedInlineTests {
         }
     }
 
-    @Test("Pop operations")
-    func popOperations() throws {
+    @Test
+    func `Pop operations`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         try list.append(1)
         try list.append(2)
@@ -572,8 +572,8 @@ struct ListLinkedInlineTests {
         #expect(list.first == 2)
     }
 
-    @Test("ForEach")
-    func forEach() throws {
+    @Test
+    func `ForEach`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         try list.append(1)
         try list.append(2)
@@ -594,16 +594,16 @@ struct ListLinkedInlineTests {
 @Suite("List.Linked.Small")
 struct ListLinkedSmallTests {
 
-    @Test("Initialize empty")
-    func initializeEmpty() {
+    @Test
+    func `Initialize empty`() {
         let list = List<Int>.Linked<2>.Small<4>()
         #expect(list.count == 0)
         #expect(list.isEmpty == true)
         #expect(list.isSpilled == false)
     }
 
-    @Test("Inline storage")
-    func inlineStorage() {
+    @Test
+    func `Inline storage`() {
         var list = List<Int>.Linked<2>.Small<4>()
         list.prepend(2)
         list.prepend(1)
@@ -615,8 +615,8 @@ struct ListLinkedSmallTests {
         #expect(list.last == 3)
     }
 
-    @Test("Spill to heap")
-    func spillToHeap() {
+    @Test
+    func `Spill to heap`() {
         var list = List<Int>.Linked<2>.Small<4>()
         list.append(1)
         list.append(2)
@@ -633,8 +633,8 @@ struct ListLinkedSmallTests {
         #expect(list.last == 5)
     }
 
-    @Test("Pop operations after spill")
-    func popOperationsAfterSpill() {
+    @Test
+    func `Pop operations after spill`() {
         var list = List<Int>.Linked<2>.Small<2>()
         list.append(1)
         list.append(2)
@@ -648,8 +648,8 @@ struct ListLinkedSmallTests {
         #expect(list.first == 2)
     }
 
-    @Test("ForEach")
-    func forEach() {
+    @Test
+    func `ForEach`() {
         var list = List<Int>.Linked<2>.Small<4>()
         list.append(1)
         list.append(2)
@@ -661,8 +661,8 @@ struct ListLinkedSmallTests {
         #expect(collected == [1, 2, 3])
     }
 
-    @Test("ForEach after spill")
-    func forEachAfterSpill() {
+    @Test
+    func `ForEach after spill`() {
         var list = List<Int>.Linked<2>.Small<2>()
         list.append(1)
         list.append(2)
@@ -677,8 +677,8 @@ struct ListLinkedSmallTests {
     // Note: Small does not conform to Sequence (unconditionally ~Copyable)
     // Use forEach for iteration instead
 
-    @Test("Clear")
-    func clear() {
+    @Test
+    func `Clear`() {
         var list = List<Int>.Linked<2>.Small<2>()
         list.append(1)
         list.append(2)
@@ -723,8 +723,8 @@ private final class TrackedElement: @unchecked Sendable {
 @Suite("List.Linked Stress Tests")
 struct ListLinkedStressTests {
 
-    @Test("Free-list reuse cycle")
-    func freeListReuseCycle() {
+    @Test
+    func `Free-list reuse cycle`() {
         // Push N elements, pop half, push half again, repeat
         var list = List<Int>.Linked<2>()
 
@@ -765,8 +765,8 @@ struct ListLinkedStressTests {
         }
     }
 
-    @Test("Growth with live nodes")
-    func growthWithLiveNodes() {
+    @Test
+    func `Growth with live nodes`() {
         // Start with small capacity, force multiple growths
         var list = List<Int>.Linked<2>()
 
@@ -795,8 +795,8 @@ struct ListLinkedStressTests {
         #expect(collected == Array(50..<100) + Array(100..<150))
     }
 
-    @Test("CoW correctness")
-    func cowCorrectness() {
+    @Test
+    func `CoW correctness`() {
         // Create list A with items
         var listA = List<Int>.Linked<2>()
         listA.append(1)
@@ -826,8 +826,8 @@ struct ListLinkedStressTests {
         #expect(Array(listB) == [2, 3, 4, 20])
     }
 
-    @Test("No leaks or double-destroys")
-    func noLeaksOrDoubleDestroys() {
+    @Test
+    func `No leaks or double-destroys`() {
         DeinitCounter.shared.reset()
 
         do {
@@ -855,8 +855,8 @@ struct ListLinkedStressTests {
         #expect(DeinitCounter.shared.initCount == DeinitCounter.shared.deinitCount)
     }
 
-    @Test("Rapid push-pop cycle (free-list torture)")
-    func rapidPushPopCycle() {
+    @Test
+    func `Rapid push-pop cycle (free-list torture)`() {
         // ChatGPT's specific test: capacity 1-2, force growth + free-list reuse
         var list = List<Int>.Linked<2>()
 
@@ -881,8 +881,8 @@ struct ListLinkedStressTests {
         }
     }
 
-    @Test("Bounded free-list reuse")
-    func boundedFreeListReuse() throws {
+    @Test
+    func `Bounded free-list reuse`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 5)
 
         // Fill to capacity
@@ -915,8 +915,8 @@ struct ListLinkedStressTests {
 @Suite("List.Linked<1> Variants")
 struct ListLinkedSinglyVariantsTests {
 
-    @Test("Bounded singly-linked")
-    func boundedSinglyLinked() throws {
+    @Test
+    func `Bounded singly-linked`() throws {
         var list = try List<Int>.Linked<1>.Bounded(capacity: 5)
         try list.prepend(2)
         try list.prepend(1)
@@ -931,8 +931,8 @@ struct ListLinkedSinglyVariantsTests {
         #expect(list.count == 2)
     }
 
-    @Test("Inline singly-linked")
-    func inlineSinglyLinked() throws {
+    @Test
+    func `Inline singly-linked`() throws {
         var list = List<Int>.Linked<1>.Inline<8>()
         try list.prepend(2)
         try list.prepend(1)
@@ -943,8 +943,8 @@ struct ListLinkedSinglyVariantsTests {
         #expect(list.last == 3)
     }
 
-    @Test("Small singly-linked with spill")
-    func smallSinglyLinkedWithSpill() {
+    @Test
+    func `Small singly-linked with spill`() {
         var list = List<Int>.Linked<1>.Small<2>()
         list.append(1)
         list.append(2)
@@ -969,8 +969,8 @@ struct DrainWhileTests {
 
     // MARK: - List.Linked
 
-    @Test("List.Linked drains some elements front-to-back")
-    func linkedDrainWhileSome() {
+    @Test
+    func `List.Linked drains some elements front-to-back`() {
         var list = List<Int>.Linked<2>()
         for e in [1, 2, 3, 4, 5] { list.append(e) }
         var drained: [Int] = []
@@ -979,8 +979,8 @@ struct DrainWhileTests {
         #expect(list.count == 2)
     }
 
-    @Test("List.Linked drains zero elements")
-    func linkedDrainWhileNone() {
+    @Test
+    func `List.Linked drains zero elements`() {
         var list = List<Int>.Linked<2>()
         for e in [1, 2, 3] { list.append(e) }
         var drained: [Int] = []
@@ -989,8 +989,8 @@ struct DrainWhileTests {
         #expect(list.count == 3)
     }
 
-    @Test("List.Linked drains all elements")
-    func linkedDrainWhileAll() {
+    @Test
+    func `List.Linked drains all elements`() {
         var list = List<Int>.Linked<2>()
         for e in [1, 2, 3] { list.append(e) }
         var drained: [Int] = []
@@ -999,16 +999,16 @@ struct DrainWhileTests {
         #expect(list.isEmpty)
     }
 
-    @Test("List.Linked drain on empty list")
-    func linkedDrainWhileEmpty() {
+    @Test
+    func `List.Linked drain on empty list`() {
         var list = List<Int>.Linked<2>()
         var drained: [Int] = []
         list.drain(while: { _ in true }) { drained.append($0) }
         #expect(drained.isEmpty)
     }
 
-    @Test("List.Linked remaining elements intact after partial drain")
-    func linkedRemainingIntact() {
+    @Test
+    func `List.Linked remaining elements intact after partial drain`() {
         var list = List<Int>.Linked<2>()
         for e in [1, 2, 3, 4, 5] { list.append(e) }
         list.drain(while: { $0 < 4 }) { _ in }
@@ -1020,8 +1020,8 @@ struct DrainWhileTests {
 
     // MARK: - List.Linked.Bounded
 
-    @Test("Bounded drains some elements front-to-back")
-    func boundedDrainWhileSome() throws {
+    @Test
+    func `Bounded drains some elements front-to-back`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
         for e in [1, 2, 3, 4, 5] { try list.append(e) }
         var drained: [Int] = []
@@ -1030,8 +1030,8 @@ struct DrainWhileTests {
         #expect(list.count == 2)
     }
 
-    @Test("Bounded drains zero elements")
-    func boundedDrainWhileNone() throws {
+    @Test
+    func `Bounded drains zero elements`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
         for e in [1, 2, 3] { try list.append(e) }
         var drained: [Int] = []
@@ -1040,8 +1040,8 @@ struct DrainWhileTests {
         #expect(list.count == 3)
     }
 
-    @Test("Bounded drains all elements")
-    func boundedDrainWhileAll() throws {
+    @Test
+    func `Bounded drains all elements`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
         for e in [1, 2, 3] { try list.append(e) }
         var drained: [Int] = []
@@ -1050,16 +1050,16 @@ struct DrainWhileTests {
         #expect(list.isEmpty)
     }
 
-    @Test("Bounded drain on empty list")
-    func boundedDrainWhileEmpty() throws {
+    @Test
+    func `Bounded drain on empty list`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
         var drained: [Int] = []
         list.drain(while: { _ in true }) { drained.append($0) }
         #expect(drained.isEmpty)
     }
 
-    @Test("Bounded remaining elements intact after partial drain")
-    func boundedRemainingIntact() throws {
+    @Test
+    func `Bounded remaining elements intact after partial drain`() throws {
         var list = try List<Int>.Linked<2>.Bounded(capacity: 10)
         for e in [1, 2, 3, 4, 5] { try list.append(e) }
         list.drain(while: { $0 < 4 }) { _ in }
@@ -1071,8 +1071,8 @@ struct DrainWhileTests {
 
     // MARK: - List.Linked.Inline
 
-    @Test("Inline drains some elements front-to-back")
-    func inlineDrainWhileSome() throws {
+    @Test
+    func `Inline drains some elements front-to-back`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         for e in [1, 2, 3, 4, 5] { try list.append(e) }
         var drained: [Int] = []
@@ -1081,8 +1081,8 @@ struct DrainWhileTests {
         #expect(list.count == 2)
     }
 
-    @Test("Inline drains zero elements")
-    func inlineDrainWhileNone() throws {
+    @Test
+    func `Inline drains zero elements`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         for e in [1, 2, 3] { try list.append(e) }
         var drained: [Int] = []
@@ -1091,8 +1091,8 @@ struct DrainWhileTests {
         #expect(list.count == 3)
     }
 
-    @Test("Inline drains all elements")
-    func inlineDrainWhileAll() throws {
+    @Test
+    func `Inline drains all elements`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         for e in [1, 2, 3] { try list.append(e) }
         var drained: [Int] = []
@@ -1101,16 +1101,16 @@ struct DrainWhileTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Inline drain on empty list")
-    func inlineDrainWhileEmpty() {
+    @Test
+    func `Inline drain on empty list`() {
         var list = List<Int>.Linked<2>.Inline<8>()
         var drained: [Int] = []
         list.drain(while: { _ in true }) { drained.append($0) }
         #expect(drained.isEmpty)
     }
 
-    @Test("Inline remaining elements intact after partial drain")
-    func inlineRemainingIntact() throws {
+    @Test
+    func `Inline remaining elements intact after partial drain`() throws {
         var list = List<Int>.Linked<2>.Inline<8>()
         for e in [1, 2, 3, 4, 5] { try list.append(e) }
         list.drain(while: { $0 < 4 }) { _ in }
@@ -1122,8 +1122,8 @@ struct DrainWhileTests {
 
     // MARK: - List.Linked.Small
 
-    @Test("Small drains some elements front-to-back")
-    func smallDrainWhileSome() {
+    @Test
+    func `Small drains some elements front-to-back`() {
         var list = List<Int>.Linked<2>.Small<8>()
         for e in [1, 2, 3, 4, 5] { list.append(e) }
         var drained: [Int] = []
@@ -1132,8 +1132,8 @@ struct DrainWhileTests {
         #expect(list.count == 2)
     }
 
-    @Test("Small drains zero elements")
-    func smallDrainWhileNone() {
+    @Test
+    func `Small drains zero elements`() {
         var list = List<Int>.Linked<2>.Small<8>()
         for e in [1, 2, 3] { list.append(e) }
         var drained: [Int] = []
@@ -1142,8 +1142,8 @@ struct DrainWhileTests {
         #expect(list.count == 3)
     }
 
-    @Test("Small drains all elements")
-    func smallDrainWhileAll() {
+    @Test
+    func `Small drains all elements`() {
         var list = List<Int>.Linked<2>.Small<8>()
         for e in [1, 2, 3] { list.append(e) }
         var drained: [Int] = []
@@ -1152,16 +1152,16 @@ struct DrainWhileTests {
         #expect(list.isEmpty == true)
     }
 
-    @Test("Small drain on empty list")
-    func smallDrainWhileEmpty() {
+    @Test
+    func `Small drain on empty list`() {
         var list = List<Int>.Linked<2>.Small<8>()
         var drained: [Int] = []
         list.drain(while: { _ in true }) { drained.append($0) }
         #expect(drained.isEmpty)
     }
 
-    @Test("Small remaining elements intact after partial drain")
-    func smallRemainingIntact() {
+    @Test
+    func `Small remaining elements intact after partial drain`() {
         var list = List<Int>.Linked<2>.Small<8>()
         for e in [1, 2, 3, 4, 5] { list.append(e) }
         list.drain(while: { $0 < 4 }) { _ in }
