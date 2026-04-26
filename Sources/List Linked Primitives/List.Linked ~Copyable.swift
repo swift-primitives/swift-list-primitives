@@ -174,7 +174,7 @@ where Tag == List<Element>.Linked<n>.Peek,
     public func first<R>(
         _ body: (borrowing Element) -> R
     ) -> R? {
-        unsafe base.pointee._buffer.peekFront(body)
+        unsafe base.value._buffer.peekFront(body)
     }
 
     /// Peeks at the last element without removing it.
@@ -188,7 +188,7 @@ where Tag == List<Element>.Linked<n>.Peek,
     public func last<R>(
         _ body: (borrowing Element) -> R
     ) -> R? {
-        unsafe base.pointee._buffer.peekBack(body)
+        unsafe base.value._buffer.peekBack(body)
     }
 }
 
@@ -240,6 +240,6 @@ where Tag == List<Element>.Linked<n>.Reversed,
     public func forEach(
         _ body: (borrowing Element) -> Void
     ) {
-        unsafe base.pointee._buffer.forEachReversed(body)
+        unsafe base.value._buffer.forEachReversed(body)
     }
 }
