@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "List types for Swift."
+description: "Phantom-typed list positions that catch element-type mismatches at compile time, shared across list disciplines for Swift."
 topics:
   - primitives
   - list
