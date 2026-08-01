@@ -21,6 +21,12 @@ import Testing
 // shape; the real suite is authored during flip-prep.
 @Suite("List")
 struct Tests {
+    @Suite struct Unit {}
+    @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
+}
+
+extension Tests.Unit {
     @Test func `namespace is available`() {
         // Minimal smoke test — the real suite is authored during flip-prep.
         _ = List<Int>.self
