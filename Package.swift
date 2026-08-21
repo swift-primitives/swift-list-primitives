@@ -12,17 +12,17 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        // Root: namespace + foundational, stdlib-only declarations (zero deps).
+
         .library(
             name: "List Primitive",
             targets: ["List Primitive"]
         ),
-        // Sub-namespace: List.Index typed-index surface (needs Index Primitives).
+
         .library(
             name: "List Index Primitives",
             targets: ["List Index Primitives"]
         ),
-        // Umbrella: re-exports the root + all sub-namespaces.
+
         .library(
             name: "List Primitives",
             targets: ["List Primitives"]
@@ -39,18 +39,12 @@ let package = Package(
         )
     ],
     targets: [
-        // MARK: - Root
-        // Root: the `enum List` namespace shell + foundational stdlib-only decls.
-        // Zero external deps per [MOD-017]. Future zero-dep List disciplines
-        // live here; the linked-list discipline was extracted to
-        // swift-list-linked-primitives.
+
         .target(
             name: "List Primitive",
             dependencies: []
         ),
 
-        // MARK: - Sub-namespaces
-        // Index: the `List.Index` typed-index surface over Index_Primitives.
         .target(
             name: "List Index Primitives",
             dependencies: [
@@ -59,8 +53,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Umbrella
-        // Umbrella: re-exports the root + all sub-namespaces.
         .target(
             name: "List Primitives",
             dependencies: [
@@ -69,7 +61,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support
         .target(
             name: "List Primitives Test Support",
             dependencies: [
@@ -79,7 +70,6 @@ let package = Package(
             path: "Tests/Support"
         ),
 
-        // MARK: - Tests
         .testTarget(
             name: "List Primitives Tests",
             dependencies: [
